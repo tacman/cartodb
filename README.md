@@ -57,7 +57,8 @@ and code.
   
 # How do I install CartoDB? #
 
-CartoDB is under heavy development, so the installation process is only for hardy souls.  
+CartoDB is under heavy development, so the installation process is only
+for hardy souls.
 That said, there are many successful installations on Amazon EC2, Linode, 
 dedicated instances and development machines running OS X and Ubuntu 10.04+.
 
@@ -280,6 +281,13 @@ You should now be able to access
 **`http://[mysubdomain].localhost.lan:3000`**
 in your browser and login with the password specified above.
 
+# Handy tasks #
+
+For a full list of CartoDB utility tests:
+
+```
+bundle exec rake -T
+```
 
 # Note on tiling, SQL API and Redis #
 

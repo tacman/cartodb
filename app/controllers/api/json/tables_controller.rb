@@ -104,16 +104,17 @@ class Api::Json::TablesController < Api::ApplicationController
         @data_import.reload
         CartoDB::Logger.info "Errors on tables#create", @table.errors.full_messages
         if @table.data_import_id
-          render_jsonp({ :description => @table.errors.full_messages ,
+          render_jsonp({ :description => @data_import.get_error_text ,
                       :stack =>  @data_import.log_json,
                       :code=>@data_import.error_code }, 
                       400)
         else
-          render_jsonp({ :description => '', :stack => @table.errors.full_messages, :code=>@data_import.error_code }, 400)
+          render_jsonp({ :description => @data_import.get_error_text, :stack => @table.errors.full_messages, :code=>@data_import.error_code }, 400)
         end
       end
     end
   rescue => e
+    @data_import.reload
     # Add semantics based on the users creation method. 
     # TODO: The importer should throw these specific errors
     if !e.is_a? CartoDB::QuotaExceeded
@@ -121,11 +122,10 @@ class Api::Json::TablesController < Api::ApplicationController
       e = CartoDB::InvalidFile.new    e.message    if params[:file]    
       e = CartoDB::TableCopyError.new e.message    if params[:table_copy]    
     end  
-    
     CartoDB::Logger.info "Exception on tables#create", translate_error(e).inspect
     
     @data_import.reload
-    render_jsonp({ :description => translate_error(e), :stack =>  @data_import.log_json, :code => @data_import.error_code }, 400)
+    render_jsonp({ :description => @data_import.get_error_text, :stack =>  @data_import.log_json, :code => @data_import.error_code }, 400)
   end
 
   def show
@@ -139,6 +139,11 @@ class Api::Json::TablesController < Api::ApplicationController
         send_data @table.to_shp,
           :type => 'application/octet-stream; charset=binary; header=present',
           :disposition => "attachment; filename=#{@table.name}.zip"
+      end
+      format.kml or format.kmz do
+        send_data @table.to_kml,
+          :type => 'application/vnd.google-earth.kml+xml; charset=binary; header=present',
+          :disposition => "attachment; filename=#{@table.name}.kmz"
       end
       format.json do
         render_jsonp({ :id => @table.id,

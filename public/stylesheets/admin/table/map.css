@@ -1,6 +1,7 @@
 div.map_window {position:absolute; top:161px; left:0; right:0; bottom:0; width:100%; background:white;}
+div.map_window.public {overflow:hidden;}
 div.map_window div.map_curtain {position:absolute; left:0; right:0; top:0; bottom:0; background:url('/images/admin/table/table_bkg.png') repeat-x 0 bottom #F0F1F5; z-index:12;}
-div.map_window div#map {position:absolute; left:0; right:0; bottom:0; top:51px; width:100%; z-index:5; background:url('/images/admin/table/table_bkg.png') repeat-x 0 bottom #F0F1F5;}
+div.map_window div#map {position:absolute; left:0; right:0; bottom:0; top:60px; width:100%; z-index:5; background:url('/images/admin/table/table_bkg.png') repeat-x 0 bottom #F0F1F5;}
 div.map_window div#map div {-webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -o-user-select: none; user-select: none;}
 
 
@@ -189,10 +190,11 @@ div.map_window div.map_header ul.infowindow_customization div.suboptions ul.colu
 div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names .jspTrack {background: #dddddd;}
 div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names .jspDrag {background: #999999;}
 div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names .jspHover, div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names .jspActive {background:#666666}
-div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names li {width:100%; height:auto; padding:0; margin:0; border:none;}
-div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names li a {padding:0 0 0 15px; max-width:95px; background:url('/images/admin/icons/checkbox.png') no-repeat -2px -18px!important; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; color:#999999!important; text-shadow:0 1px white}
+div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names li {display:block; width:100%; height:auto; padding:0; margin:2px 0; border:none;}
+div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names li a {display:block; padding:0 0 0 15px; background:url('/images/admin/icons/checkbox.png') no-repeat -2px -18px!important; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; color:#999999!important; text-shadow:0 1px white;
+text-overflow:ellipsis; overflow:hidden; white-space:nowrap;}
 div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names li a:hover {cursor:pointer!important; color:#666666!important;}
-div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names li a.on {background-position:-2px -1px!important; color:#666666!important; text-shadow:0 1px white}
+div.map_window div.map_header ul.infowindow_customization div.suboptions ul.column_names li a.on {background-position:-2px -1px!important; color:#666666!important; text-shadow:0 1px white; }
 
 
 /*MARKERS CUSTOMIZATION*/
