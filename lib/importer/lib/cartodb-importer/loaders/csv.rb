@@ -81,10 +81,13 @@ module CartoDB
                 @data_import.log_update("converting GeoJSON to the_geom")                              
                 begin
                   # ATTEMPT FULL SWEEP CONVERSION (QUICK)
+                  Rails.logger.info "trying the full update"
                   @db_connection.run("UPDATE #{@suggested_name} 
                                       SET the_geom = ST_SetSRID(ST_GeomFromGeoJSON(the_geom_orig),4326) 
                                       WHERE the_geom_orig IS NOT NULL AND the_geom_orig != ''")
                 rescue => e                  
+                  Rails.logger.info e.inspect
+                  
                   # The conversion failed somewhere. go through row by row...
                   @db_connection["SELECT the_geom_orig 
                                   FROM #{@suggested_name} 
@@ -92,7 +95,7 @@ module CartoDB
                                   AND the_geom_orig IS NOT NULL"].each do |res|
                     begin
                       @db_connection.run("UPDATE #{@suggested_name} 
-                                          SET the_geom = ST_SetSRID(ST_GeomFromGeoJSON(the_geom_orig,#{CartoDB::SRID}) 
+                                          SET the_geom = ST_SetSRID(ST_GeomFromGeoJSON(the_geom_orig),#{CartoDB::SRID}) 
                                           WHERE the_geom IS NULL 
                                           AND the_geom_orig = '#{res[:the_geom_orig]}'");
                     rescue => e
