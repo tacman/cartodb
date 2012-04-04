@@ -41,7 +41,8 @@
       # APP
       "admin/show/view/GOD",
       "admin/show/helpers",
-      "admin/show/app"
+      "admin/show/app",
+	  "admin/index/append"
     )%>
 
     <script type="text/javascript">
@@ -65,8 +66,11 @@
 
 
   <% content_for(:head) do %>
-    <%= stylesheet_link_tag('reset.css','admin/table/view','admin/table/table', 'admin/table/map' ) %>
+    <%= stylesheet_link_tag('reset.css', 'admin/tables/dashboard','admin/table/view','admin/table/table', 'admin/table/map' ) %>
   <% end %>
+
+
+  <div id="hugeUploader"></div>
 
   <section class="subheader">
     <div class="outer">
@@ -124,13 +128,69 @@
   </section>
 
   <div class="table_position">
+	
     <table border="0" id="carto_table" cellspacing="0"></table>
   </div>
   <div class="map_window"></div>
 
 
   <%= content_for(:mamufas) do %>
-    <div class="mamufas"></div>
+    <div class="mamufas">
+      <div class="create_window">
+        <a href="#close_window" class="close_create"></a>
+        <div class="inner_">
+          <span class="loading">
+            <h5>We are creating your table...</h5>
+            <p>It shouldn't take long, just a few more seconds ok?</p>
+          </span>
+          <form action="#import_file" id="import_file" enctype="multipart/form-data" method="post">
+            <input id="append" type="hidden" name="append" value="true"/>
+            <span class="top">
+              <h4>Do you want to import some data to the new table now?</h4>
+              <p>You will also be able to do it later.</p>
+              <ul>
+                <li class="selected">
+                  <a href="#">I want to create an empty table</a>
+                  <div class="geom_type">
+                    <span class="selected"><a href="#point">Point</a></span>
+                    <span><a href="#line">Line</a></span>
+                    <span><a href="#polygon">Polygon</a></span>
+                  </div>
+                </li>
+                <li>
+                  <a href="#">I want to start with some imported data</a>
+                  <span class="file">
+                    <div class="select_file">
+                      <div id="uploader"></div>
+                      <p>We support xls, csv, gpx, shp, zip, etc...</p>
+                    </div>
+                    <div class="progress">
+                      <p>Uploading your file...</p>
+                      <span class="progress"></span>
+                    </div>
+                  </span>
+                </li>
+                <li>
+                  <a href="#">I want to add some data from a URL</a>
+                  <span class="file">
+                    <div class="select_file">
+                      <input id="url_txt" type="text" name="url_value" value="Insert a valid URL..."/>
+                      <div class="error_url">
+                        <p><span>This URL is not valid</span></p>
+                      </div>
+                    </div>
+                  </span>
+                </li>
+              </ul>
+            </span>
+            <span class="bottom">
+              <a href="#" class="cancel">cancel</a>
+              <input id="create_table" type="submit" name="submit" value="Create table"/>
+            </span>
+          </form>
+        </div>
+      </div>
+</div>
   <% end %>
 
 

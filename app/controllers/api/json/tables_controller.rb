@@ -46,6 +46,7 @@ class Api::Json::TablesController < Api::ApplicationController
   end
 
   def create
+<<<<<<< HEAD
     @data_import = DataImport.new(:user_id => current_user.id)
     @data_import.updated_at = Time.now
     @data_import.save
@@ -82,7 +83,37 @@ class Api::Json::TablesController < Api::ApplicationController
         @data_import.set_error_code(6000)
         raise "OSM data error"
       end
+    elsif params[:append].present?
+      @new_table = Table.new
+      
+      @data_import = DataImport.new(:user_id => current_user.id)
+      @data_import.updated_at = Time.now
+      @data_import.save
+      
+      @new_table.user_id = current_user.id
+      @new_table.data_import_id = @data_import.id
+      @new_table.name = params[:name]                          if params[:name]# && !params[:table_copy]
+      @new_table.import_from_file = params[:file]              if params[:file]
+      @new_table.import_from_url = params[:url]                if params[:url]
+      #     
+      @new_table.importing_SRID = params[:srid] || CartoDB::SRID
+      @new_table.force_schema   = params[:schema]              if params[:schema]
+      @new_table.the_geom_type  = params[:the_geom_type]       if params[:the_geom_type]
+      
+      if @new_table.valid? && @new_table.save      
+        @new_table.reload
+        @table = Table.filter(:user_id => current_user.id, :id => 146).first
+        @table.append_to_table(:from_table => @new_table)
+        @table.save.reload
+      #   # append_to_table doesn't automatically destroy the table
+        @new_table.destroy
+      
+        render_jsonp({:id => @table.id, 
+                     :name => @table.name, 
+                     :schema => @table.schema}, 200, :location => table_path(@table))
+      end 
     else
+      
       @table = Table.new
       @table.user_id = current_user.id
       @table.data_import_id = @data_import.id
@@ -95,7 +126,11 @@ class Api::Json::TablesController < Api::ApplicationController
       @table.importing_SRID = params[:srid] || CartoDB::SRID
       @table.force_schema   = params[:schema]              if params[:schema]
       @table.the_geom_type  = params[:the_geom_type]       if params[:the_geom_type]
+<<<<<<< HEAD
       
+=======
+    
+>>>>>>> mid testing
       if @table.valid? && @table.save      
         render_jsonp({ :id => @table.id, 
                        :name => @table.name, 
@@ -104,12 +139,20 @@ class Api::Json::TablesController < Api::ApplicationController
         @data_import.reload
         CartoDB::Logger.info "Errors on tables#create", @table.errors.full_messages
         if @table.data_import_id
+<<<<<<< HEAD
+=======
+          # also available @table.errors.full_messages
+>>>>>>> mid testing
           render_jsonp({ :description => @data_import.get_error_text ,
                       :stack =>  @data_import.log_json,
                       :code=>@data_import.error_code }, 
                       400)
         else
+<<<<<<< HEAD
           render_jsonp({ :description => @data_import.get_error_text, :stack => @table.errors.full_messages, :code=>@data_import.error_code }, 400)
+=======
+          render_jsonp({ :description => '', :stack => '', :code=>0 }, 400)
+>>>>>>> mid testing
         end
       end
     end
