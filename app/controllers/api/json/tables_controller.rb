@@ -126,11 +126,7 @@ class Api::Json::TablesController < Api::ApplicationController
       @table.importing_SRID = params[:srid] || CartoDB::SRID
       @table.force_schema   = params[:schema]              if params[:schema]
       @table.the_geom_type  = params[:the_geom_type]       if params[:the_geom_type]
-<<<<<<< HEAD
-      
-=======
-    
->>>>>>> mid testing
+
       if @table.valid? && @table.save      
         render_jsonp({ :id => @table.id, 
                        :name => @table.name, 
@@ -139,20 +135,12 @@ class Api::Json::TablesController < Api::ApplicationController
         @data_import.reload
         CartoDB::Logger.info "Errors on tables#create", @table.errors.full_messages
         if @table.data_import_id
-<<<<<<< HEAD
-=======
-          # also available @table.errors.full_messages
->>>>>>> mid testing
           render_jsonp({ :description => @data_import.get_error_text ,
                       :stack =>  @data_import.log_json,
                       :code=>@data_import.error_code }, 
                       400)
         else
-<<<<<<< HEAD
           render_jsonp({ :description => @data_import.get_error_text, :stack => @table.errors.full_messages, :code=>@data_import.error_code }, 400)
-=======
-          render_jsonp({ :description => '', :stack => '', :code=>0 }, 400)
->>>>>>> mid testing
         end
       end
     end
